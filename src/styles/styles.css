@@ -1,0 +1,29 @@
+.libreta{
+    box-shadow: 5px 5px 15px black;
+}
+.caja-todo{
+    width: 400px;
+}
+.numero-items{
+    height: 40px;
+    color: gray;
+    font-style: italic;
+}
+.hide {
+    display: none;
+}
+.hide:focus {
+  outline: none;
+  box-shadow: none;
+}
+.hide:hover {
+    box-shadow: 0 0 5px black;
+}
+.hide:active {
+    box-shadow: none;
+}
+.seleccionar:hover .hide {
+    display: block;
+    color: red;
+}
+
