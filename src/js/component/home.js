@@ -1,4 +1,4 @@
-import React, { useState, setState } from "react";
+import React, { useState } from "react";
 
 let listaTareas = ["Tarea 1", "Tarea 2", "Tarea 3"];
 
@@ -10,13 +10,12 @@ export function Home() {
 	function agregar() {
 		let aux = numTareas;
 		aux++;
-		listaTareas.push(this.state.value);
-		this.setState("");
+		listaTareas.push("Tarea nueva");
 		setNumTareas(aux);
 		return;
 	}
 
-	function eliminar() {
+	function eliminar(index) {
 		let aux = numTareas;
 		aux--;
 		listaTareas.pop();
@@ -48,7 +47,7 @@ export function Home() {
 								<button
 									type="button"
 									className="btn btn-link hide"
-									onClick={eliminar}>
+									onClick={eliminar(index)}>
 									<i className="fas fa-times"></i>
 								</button>
 							</li>
