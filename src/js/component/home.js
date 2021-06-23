@@ -1,25 +1,22 @@
 import React, { useState } from "react";
 
-let listaTareas = ["Tarea 1", "Tarea 2", "Tarea 3"];
-
-let state = { value: "" };
+let tareasPred = ["Tarea 1", "Tarea 2", "Tarea 3", "Tarea 4"];
 
 export function Home() {
-	const [numTareas, setNumTareas] = useState(0);
+	const [listaTareas, setListaTareas] = useState(tareasPred);
 
 	function agregar() {
-		let aux = numTareas;
-		aux++;
-		listaTareas.push("Tarea nueva");
-		setNumTareas(aux);
+		setListaTareas(arr => [...arr, "Tarea nueva"]);
 		return;
 	}
 
 	function eliminar(index) {
-		let aux = numTareas;
-		aux--;
-		listaTareas.pop();
-		setNumTareas(aux);
+		/*setListaTareas(
+			listaTareas.filter(
+				(element, indice) => indice !== index)
+		);
+        console.log(listaTareas);
+        console.log(index);*/
 		return;
 	}
 
@@ -30,9 +27,8 @@ export function Home() {
 				<input
 					className="list-group-item caja-todo"
 					placeholder="Escribir una nueva tarea..."
-					onChange={e =>
-						this.setState({ value: e.target.value })
-					}></input>
+					/*onChange={""}*/
+				></input>
 				{listaTareas.length === 0 ? (
 					<li className="list-group-item caja-todo">
 						<p className="my-2">No tasks, add a task</p>
@@ -47,7 +43,13 @@ export function Home() {
 								<button
 									type="button"
 									className="btn btn-link hide"
-									onClick={eliminar(index)}>
+									onClick={index =>
+										setListaTareas(
+											listaTareas.filter(
+												index => index !== index
+											)
+										)
+									}>
 									<i className="fas fa-times"></i>
 								</button>
 							</li>
@@ -75,3 +77,51 @@ export function Home() {
 		</div>
 	);
 }
+
+// sample datas structure
+/* const datas = [
+    {
+      id:   1,
+      name: 'john',
+      gender: 'm'
+    }
+    {
+      id:   2,
+      name: 'mary',
+      gender: 'f'
+    }
+] */ // make sure to set the default value in the useState call (I already fixed it)
+/*
+const [datas, setDatas] = useState([
+    {
+      id:   1,
+      name: 'john',
+      gender: 'm'
+    },
+    {
+      id:   2,
+      name: 'mary',
+      gender: 'f'
+    }
+]);
+
+const updateFieldChanged = index => e => {
+
+    console.log('index: ' + index);
+    console.log('property name: '+ e.target.name);
+    let newArr = [...datas]; // copying the old datas array
+    newArr[index] = e.target.value; // replace e.target.value with whatever you want to change it to
+
+    setDatas(newArr); // ??
+}
+
+return (
+    <React.Fragment>
+        { datas.map( (data, index) => {
+              <li key={data.name}>
+                <input type="text" name="name" value={data.name} onChange={updateFieldChanged(index)}  />
+              </li>
+          })
+        }
+    </React.Fragment>
+)*/
