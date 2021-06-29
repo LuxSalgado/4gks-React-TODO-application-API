@@ -43,13 +43,12 @@ export function Home() {
 								<button
 									type="button"
 									className="btn btn-link hide"
-									onClick={index =>
-										setListaTareas(
-											listaTareas.filter(
-												index => index !== index
-											)
-										)
-									}>
+									onClick={() => {
+										let aux = listaTareas.filter(
+											(value, indexu) => index !== indexu
+										);
+										setListaTareas(aux);
+									}}>
 									<i className="fas fa-times"></i>
 								</button>
 							</li>
