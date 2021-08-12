@@ -6,20 +6,20 @@
     color: gray;
     font-style: italic;
 }
-.hide {
+.hide { /*Para ocultar el botón*/
     display: none;
 }
-.hide:focus {
+.hide:focus { /*Para quitar el borde exterior del botón después de presionado*/
   outline: none;
   box-shadow: none;
 }
-.hide:hover {
+.hide:hover { /*Para mostrar la sombra del botón*/
     box-shadow: 0 0 5px black;
 }
-.hide:active {
+.hide:active { /*Para quitar la sombra del botón cuando se presione*/
     box-shadow: none;
 }
-.seleccionar:hover .hide {
+.seleccionar:hover .hide { /*Para mostrar el botón que está dentro de la LI con clase seleccionar cuando la LI tenga el mouse encima*/
     display: block;
     color: red;
 }
