@@ -1,43 +1,44 @@
 import React, { useState } from "react";
+import PropTypes, { object } from "prop-types";
+import ReactDOM from "react-dom";
 
 export function Home() {
 	const [tareaNueva, setTareaNueva] = useState("");
-	const [listaTareas, setListaTareas] = useState([
-		"Tarea 1",
-		"Tarea 2",
-		"Tarea 3",
-		"Tarea 4"
-	]);
+	const [listaTareas, setListaTareas] = useState([]);
 
-	function agregar() {
-		if (tareaNueva === "") {
-			alert("Debes escribir una nueva tarea");
-			return;
-		} else {
-			setListaTareas(arr => [...arr, tareaNueva]);
-			setTareaNueva("");
-			return;
+	function agregar(e) {
+		if (e.key === "Enter") {
+			if (tareaNueva === "") {
+				alert("Debes escribir una nueva tarea");
+				return;
+			} else {
+				setListaTareas(arr => [...arr, tareaNueva]);
+				setTareaNueva("");
+				return;
+			}
+		}
+		return;
+	}
+
+	function eliminar(indice) {
+		if (indice > -1) {
+			//Para validar que el arreglo no esté vacío
+			let aux = listaTareas.filter((value, index) => index !== indice);
+			setListaTareas(aux);
 		}
 	}
 
-	function eliminar(index) {
-		/*setListaTareas(
-			listaTareas.filter(
-				(element, indice) => indice !== index)
-		);
-        console.log(listaTareas);
-        console.log(index);*/
-		return;
-	}
 	return (
 		<div className="container d-flex flex-column align-items-center">
 			<h1 className="style-1 my-4">To-Do List</h1>
 			<ul className="list-group shadow">
 				<input
 					className="list-group-item caja-todo"
+					id="inputTarea"
 					placeholder="Escribir una nueva tarea..."
 					onChange={e => setTareaNueva(e.target.value)}
-					value={tareaNueva}></input>
+					value={tareaNueva}
+					onKeyPress={e => agregar(e)}></input>
 				{listaTareas.length === 0 ? (
 					<li className="list-group-item caja-todo">
 						<p className="my-2">No hay tareas, agregar tarea</p>
@@ -53,10 +54,7 @@ export function Home() {
 									type="button"
 									className="btn btn-link hide"
 									onClick={() => {
-										let aux = listaTareas.filter(
-											(value, indexu) => index !== indexu
-										);
-										setListaTareas(aux);
+										eliminar(index);
 									}}>
 									<i className="fas fa-times"></i>
 								</button>
@@ -76,12 +74,6 @@ export function Home() {
 					</li>
 				)}
 			</ul>
-			<button
-				type="button"
-				className="btn btn-info my-3 shadow"
-				onClick={agregar}>
-				Agregar Tarea
-			</button>
 		</div>
 	);
 }
