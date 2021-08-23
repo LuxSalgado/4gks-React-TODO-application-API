@@ -144,7 +144,7 @@ export function Home() {
 				Guardar en API
 			</button> */}
 			<button
-				className="btn btn-danger"
+				className="btn btn-danger my-4"
 				disabled={disable}
 				onClick={() => {
 					borrarTodo(); //Llamada a la funcion que llama a la API para el delete
