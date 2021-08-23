@@ -4,8 +4,9 @@ import ReactDOM from "react-dom";
 import { get } from "jquery";
 
 export function Home() {
-	const [tareaNueva, setTareaNueva] = useState("");
+	const [tareaNueva, setTareaNueva] = useState(""); //Entrada controlada (input)
 	const [listaTareas, setListaTareas] = useState([]);
+	const [disable, setDisable] = useState(false); //Para deshabilitar el boton y el input luego de borrar la lista y usuario
 
 	const listarTodo = () => {
 		fetch("https://assets.breatheco.de/apis/fake/todos/user/luxsalgado", {
@@ -39,7 +40,8 @@ export function Home() {
 		})
 			.then(resp => resp.json())
 			.then(data => {
-				listarTodo(); //esto llamara de nuevo al GET
+				console.log(data);
+				//listarTodo(); //esto llamara de nuevo al GET
 			});
 	};
 
@@ -49,7 +51,9 @@ export function Home() {
 			headers: {
 				"Content-Type": "application/json"
 			}
-		}).then(resp => resp.json());
+		})
+			.then(resp => resp.json())
+			.then(() => setListaTareas([]));
 	};
 
 	function agregar(e) {
@@ -58,10 +62,10 @@ export function Home() {
 				alert("Debes escribir una nueva tarea");
 				return;
 			} else {
-				/* setListaTareas(arr => [
+				setListaTareas(arr => [
 					...arr,
 					{ label: tareaNueva, done: false }
-				]); */
+				]);
 				setTareaNueva("");
 				enviarTodo([
 					//Ojo con esto, se hace porque el setListaTareas no guarda los datos nuevos tan rapido
@@ -79,7 +83,6 @@ export function Home() {
 			//Para validar que el arreglo no esté vacío
 			let aux = listaTareas.filter((value, index) => index !== indice);
 			setListaTareas(aux);
-			console.log("Nuevo arreglo: ", listaTareas);
 			enviarTodo(aux);
 		}
 	}
@@ -96,6 +99,7 @@ export function Home() {
 					className="list-group-item caja-todo"
 					id="inputTarea"
 					placeholder="Escribir una nueva tarea..."
+					disabled={disable}
 					onChange={e => setTareaNueva(e.target.value)}
 					value={tareaNueva}
 					onKeyPress={e => agregar(e)}></input>
@@ -139,8 +143,15 @@ export function Home() {
 				onClick={() => enviarTodo(listaTareas)}>
 				Guardar en API
 			</button> */}
-			<button className="btn btn-danger" onClick={() => borrarTodo()}>
-				Eliminar toda la lista de tareas y el usuario
+			<button
+				className="btn btn-danger"
+				disabled={disable}
+				onClick={() => {
+					borrarTodo(); //Llamada a la funcion que llama a la API para el delete
+					setDisable(true); //Para deshabilitar el boton
+					alert("Usuario y tareas eliminadas satisfactoriamente");
+				}}>
+				Eliminar usuario y tareas
 			</button>
 		</div>
 	);
