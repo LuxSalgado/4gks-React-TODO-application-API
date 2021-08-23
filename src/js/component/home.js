@@ -29,35 +29,27 @@ export function Home() {
 			});
 	};
 
-	const enviarTodo = () => {
+	const enviarTodo = nuevoArray => {
 		fetch("https://assets.breatheco.de/apis/fake/todos/user/luxsalgado", {
 			method: "PUT",
-			//body: JSON.stringify(todos),
-			BODY: [
-				{ label: "Make the bed", done: false },
-				{ label: "Walk the dog555", done: false },
-				{ label: "Do the replits", done: false }
-			],
+			body: JSON.stringify(nuevoArray), //Envio la variable y la convierto en texto plano
 			headers: {
 				"Content-Type": "application/json"
 			}
 		})
-			.then(
-				resp => resp.json()
-				//console.log("Respuesta: ", resp.ok); // Será true (verdad) si la respuesta es exitosa.
-				//console.log("Status: ", resp.status); // el código de estado = 200 o código = 400 etc.
-				//console.log("Cadena: ",resp.text()); // Intentará devolver el resultado exacto como cadena (string)
-				//return resp.json(); (regresa una promesa) toma la respuesta de la API y la transforma a JSON
-			)
+			.then(resp => resp.json())
 			.then(data => {
-				//Aquí es donde debe comenzar tu código después de que finalice la búsqueda
-				console.log("Data recibida", data); //esto imprimirá en la consola el objeto exacto recibido del servidor
-				setListaTareas(data);
+				listarTodo(); //esto llamara de nuevo al GET
 			});
-		/*
-		for (const property in tareasApi) {
-			console.log(`${property}: ${object[property]}`);
-		} */
+	};
+
+	const borrarTodo = () => {
+		fetch("https://assets.breatheco.de/apis/fake/todos/user/luxsalgado", {
+			method: "DELETE",
+			headers: {
+				"Content-Type": "application/json"
+			}
+		}).then(resp => resp.json());
 	};
 
 	function agregar(e) {
@@ -66,9 +58,16 @@ export function Home() {
 				alert("Debes escribir una nueva tarea");
 				return;
 			} else {
-				setListaTareas(arr => [...arr, tareaNueva]);
+				/* setListaTareas(arr => [
+					...arr,
+					{ label: tareaNueva, done: false }
+				]); */
 				setTareaNueva("");
-				enviarTodo();
+				enviarTodo([
+					//Ojo con esto, se hace porque el setListaTareas no guarda los datos nuevos tan rapido
+					...listaTareas,
+					{ label: tareaNueva, done: false }
+				]);
 				return;
 			}
 		}
@@ -80,6 +79,8 @@ export function Home() {
 			//Para validar que el arreglo no esté vacío
 			let aux = listaTareas.filter((value, index) => index !== indice);
 			setListaTareas(aux);
+			console.log("Nuevo arreglo: ", listaTareas);
+			enviarTodo(aux);
 		}
 	}
 
@@ -133,6 +134,14 @@ export function Home() {
 					</li>
 				)}
 			</ul>
+			{/* <button
+				className="btn btn-info"
+				onClick={() => enviarTodo(listaTareas)}>
+				Guardar en API
+			</button> */}
+			<button className="btn btn-danger" onClick={() => borrarTodo()}>
+				Eliminar toda la lista de tareas y el usuario
+			</button>
 		</div>
 	);
 }
